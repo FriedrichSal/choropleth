@@ -1,0 +1,64 @@
+<!doctype html>
+<html>
+
+<head>
+</head>
+
+<body>
+
+    {% for id in ids %}
+        <h3>{{id}}</h3>
+        <div id="{{id}}"></div>
+    {% endfor %}
+
+    <p>New list</p>
+    <div id=plz_list>n/a</div>
+    <p>Old list</p>
+    
+    {% for plz in plz_data_filtered %}
+        <span>{{plz}},</span>
+    {% endfor %}
+
+</body>
+
+
+<footer>
+    <!-- D3.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <!-- Plotly.js -->
+    <!-- <script src="https://d14fo0winaifog.cloudfront.net/plotly-basic.js"></script> -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script type="text/javascript">
+
+        function updatePlzList(plz_list){
+            var s = document.getElementById('plz_list');
+            s.innerHTML = plz_list
+        }   
+        // =================================================
+        // var plz_list_all = {{ plz_to_kreis | safe }}
+        // =================================================
+        var graphs = {{graphJSON | safe}};
+        var ids = {{ids | safe}};
+
+        for(var i in graphs) {
+            Plotly.plot(ids[i], // the ID of the div, created above
+                        graphs[i].data,
+                        graphs[i].layout || {}).then(
+                            gd => {
+                                gd.on('plotly_click', d=>{
+                                    // console.log(d)
+                                    console.log(d.points[0].location)
+                                    // Redirect and give clicked kreis id as query paramter
+                                    window.location.href = `/?clicked_id=${d.points[0].location}`
+                                    updatePlzList("Rumba rumba rumba taetaeraeae")
+                                })
+                            }
+                        );
+        }
+
+    </script>
+</footer>
+
+</html>
