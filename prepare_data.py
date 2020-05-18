@@ -30,6 +30,9 @@ plzcontent = resp.content
 with open("data/plzdata.csv", "wb") as outfile:
     outfile.write(plzcontent)
 
+# Alternative plz data link
+# https://public.opendatasoft.com/explore/dataset/postleitzahlen-deutschland/table/
+
 df_plz = pd.read_csv("data/plzdata.csv", delimiter=";", names=["name", "lat", "long"])
 
 # Connect PLZ data to landkreis data
